@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:38:42 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/05 22:24:41 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/09 12:28:50 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	ft_pipex(t_pipex *data, char **args, char **env)
 	if (data->child2 < 0)
 		ft_print_err("An Error has occuered with Fork child2");
 	if (data->child1 == 0)
-		ft_first_child_process(&data, args, env);
+		ft_first_child_process(data, args, env);
 	if (data->child2 == 0)
-		ft_second_child_process(&data, args, env);
+		ft_second_child_process(data, args, env);
 	close(data->fd[0]);
 	close(data->fd[1]);
 	waitpid(data->child1, &status, 0);
@@ -69,7 +69,7 @@ void	*ft_first_child_process(t_pipex *data, char **args, char **env)
 	cmd = ft_split(args[1], ' ');
 	la_path = ft_check_path(cmd[0], env);
 	close(data->in_file);
-	execev(la_path, cmd, env);
+	execve(la_path, cmd, env);
 	ft_print_err("An error has occured on execev");
 	return (free(cmd), free(la_path), NULL);
 }

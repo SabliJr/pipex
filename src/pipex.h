@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:21:39 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/05 22:42:27 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/09 12:25:49 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int			ft_strncmp(char *str1, char *str2, int len);
 void		ft_pipex(t_pipex *data, char **args, char **env);
 char		**ft_split(char *str, char sp);
 void		*ft_second_child_process(t_pipex *data, char **args, char **env);
-void		*ft_second_child_process(t_pipex *data, char **args, char **env);
-char		*ft_check_path(char *cmd, char **env);
 char		**ft_get_paths(char **env);
+void		*ft_first_child_process(t_pipex *data, char **args, char **env);
+char		*ft_check_path(char *cmd, char **env);
 
 #endif

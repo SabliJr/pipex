@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 14:09:39 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/05 10:56:40 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/05 22:43:46 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 			return (NULL);
 		s1[0] = '\0';
 	}
-	new_arr = (char *)malloc(sizeof(char) * (ft_strlen_gnl(s1) + ft_strlen_gnl(s2))
-			+ 1);
+	new_arr = (char *)malloc(sizeof(char) * (ft_strlen_gnl(s1)
+				+ ft_strlen_gnl(s2)) + 1);
 	if (!new_arr)
 		return (NULL);
 	while (s1[++i])
