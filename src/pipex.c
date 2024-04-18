@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:38:42 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/09 12:28:50 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/18 22:05:24 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ void	ft_pipex(t_pipex *data, char **args, char **env)
 	data->child1 = fork();
 	if (data->child1 < 0)
 		ft_print_err("An Error has occuered with Fork child1");
+	if (data->child1 == 0)
+		ft_first_child_process(data, args, env);
 	data->child2 = fork();
 	if (data->child2 < 0)
 		ft_print_err("An Error has occuered with Fork child2");
-	if (data->child1 == 0)
-		ft_first_child_process(data, args, env);
 	if (data->child2 == 0)
 		ft_second_child_process(data, args, env);
 	close(data->fd[0]);
@@ -54,8 +54,13 @@ void	*ft_first_child_process(t_pipex *data, char **args, char **env)
 	close(data->fd[0]);
 	data->in_file = open(args[1], O_RDONLY);
 	if (data->in_file == -1)
-		return (close(data->fd[1]), ft_print_err("Error opening the file"),
-			NULL);
+	{
+		if (access(args[1], W_OK) != 0)
+			return (close(data->fd[1]), ft_print_err("Permission denied, you can't open this file!"), NULL);
+		else
+			return (close(data->fd[1]), ft_print_err("Error opening the file"),
+				NULL);
+	}
 	if (dup2(data->in_file, 0) == -1)
 		return (close(data->in_file),
 			ft_print_err("An Error occoured with dup2"), NULL);
@@ -66,12 +71,15 @@ void	*ft_first_child_process(t_pipex *data, char **args, char **env)
 		return (ft_print_err("An Error occoured with dup2"), NULL);
 	}
 	close(data->fd[1]);
-	cmd = ft_split(args[1], ' ');
+	cmd = ft_split(args[2], ' ');
+	if (cmd == NULL || cmd[0] == NULL)
+		return (ft_free(cmd), exit(127), NULL);
 	la_path = ft_check_path(cmd[0], env);
 	close(data->in_file);
 	execve(la_path, cmd, env);
 	ft_print_err("An error has occured on execev");
-	return (free(cmd), free(la_path), NULL);
+	exit(1);
+	// return (free(cmd), free(la_path), la_path = NULL, NULL);
 }
 
 void	*ft_second_child_process(t_pipex *data, char **args, char **env)
@@ -80,9 +88,15 @@ void	*ft_second_child_process(t_pipex *data, char **args, char **env)
 	char	*la_path;
 
 	close(data->fd[1]);
-	data->out_file = open(args[4], O_CREAT | O_RDONLY | O_WRONLY, 0777);
+	data->out_file = open(args[4], O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	if (data->out_file < 0)
-		return (close(data->fd[0]), ft_print_err("Error opening file"), NULL);
+	{
+		if (access(args[4], W_OK) != 0)
+			return (close(data->fd[0]), ft_print_err("Permission denied, you can't open this file!"), NULL);
+		else
+			return (close(data->fd[0]), ft_print_err("Error opening file"),
+				NULL);
+	}
 	if (dup2(data->out_file, 1) == -1)
 		return (close(data->out_file), ft_print_err("An err with dup2"), NULL);
 	if (dup2(data->fd[0], 0) == -1)
@@ -93,8 +107,11 @@ void	*ft_second_child_process(t_pipex *data, char **args, char **env)
 	}
 	close(data->fd[0]);
 	cmd = ft_split(args[3], ' ');
-	la_path = ft_cheak_path(cmd[0], env);
+	if (cmd == NULL || cmd[0] == NULL)
+		return (free(cmd), exit(127), NULL);
+	la_path = ft_check_path(cmd[0], env);
 	close(data->out_file);
 	execve(la_path, cmd, env);
-	return (free(cmd), free(la_path), NULL);
+	exit(1);
+	// return (free(cmd), free(la_path), NULL);
 }

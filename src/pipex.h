@@ -6,14 +6,16 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:21:39 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/09 12:25:49 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/18 20:32:59 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
+# include "../gnl/get_next_line.h"
 # include <fcntl.h>
+# include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/types.h>
@@ -31,14 +33,17 @@ typedef struct s_pipex
 	int		out_file;
 }			t_pipex;
 
-void		ft_print_err(char *str);
+void		ft_print_err(const char *str);
 int			ft_strlen(char *str);
 int			ft_strncmp(char *str1, char *str2, int len);
 void		ft_pipex(t_pipex *data, char **args, char **env);
-char		**ft_split(char *str, char sp);
+char		**ft_split(char const *s, char c);
 void		*ft_second_child_process(t_pipex *data, char **args, char **env);
 char		**ft_get_paths(char **env);
 void		*ft_first_child_process(t_pipex *data, char **args, char **env);
 char		*ft_check_path(char *cmd, char **env);
+void		*ft_calloc(size_t nmemb, size_t size);
+void		ft_bzero(void *a, size_t n);
+void		ft_free(char **arr);
 
 #endif
