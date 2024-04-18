@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipx_utils.c                                       :+:      :+:    :+:   */
+/*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:46:02 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/05 22:44:37 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/18 20:37:03 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./pipex.h"
 
-void	ft_print_err(char *str)
+void	ft_print_err(const char *str)
 {
 	int	x;
 
@@ -23,7 +23,7 @@ void	ft_print_err(char *str)
 		x++;
 	}
 	write(1, "\n", 1);
-	exit(-1);
+	exit(1);
 }
 
 int	ft_strlen(char *str)
@@ -90,7 +90,7 @@ char	**ft_get_paths(char **env)
 	{
 		if (ft_strncmp("PATH", env[x], 4) == 0)
 		{
-			path = ft_split(env[x] + 5, ":");
+			path = ft_split(env[x] + 5, ':');
 			return (path);
 		}
 		x++;

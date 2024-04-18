@@ -12,7 +12,8 @@ GNL_FILES = ./gnl/get_next_line.c \
 
 PIPEX_FILES = ./src/pipex.c\
 			./src/pipex_utils.c \
-			./src/ft_split.c
+			./src/ft_split.c \
+			./src/general_utils.c \
 
 CC = cc
 CFLAGS = -Werror -Wall -Wextra -g3
