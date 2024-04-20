@@ -6,11 +6,11 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:29:07 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/12 15:06:45 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/19 13:35:45 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./pipex.h"
+#include "../includes/pipex.h"
 
 static	int	ft_count_words(const char *str, char c)
 {
