@@ -1,4 +1,4 @@
-#include "./pipex.h"
+#include "../includes/pipex.h"
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
@@ -35,7 +35,33 @@ void ft_free (char **arr)
 	while (arr[x])
 	{
 		free(arr[x]);
+		arr[x] = NULL;
 		x++;
 	}
 	free(arr);
+	arr = NULL;
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*new_arr;
+	int		i;
+	int		s_len;
+	int		total_len;
+
+	if (!s1 || !s2)
+		return (NULL);
+	s_len = ft_strlen(s1);
+	total_len = ft_strlen(s1) + ft_strlen(s2);
+	new_arr = (char *)malloc(sizeof(char) * (total_len + 1));
+	if (!new_arr)
+		return (NULL);
+	i = -1;
+	while (s1[++i])
+		new_arr[i] = s1[i];
+	i = -1;
+	while (s2[++i])
+		new_arr[s_len + i] = s2[i];
+	new_arr[s_len + i] = '\0';
+	return (new_arr);
 }

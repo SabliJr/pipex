@@ -6,11 +6,11 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:46:02 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/18 20:37:03 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/21 01:22:22 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./pipex.h"
+#include "../includes/pipex.h"
 
 void	ft_print_err(const char *str)
 {
@@ -19,11 +19,10 @@ void	ft_print_err(const char *str)
 	x = 0;
 	while (str[x])
 	{
-		write(1, &str[x], 1);
+		write(2, &str[x], 1);
 		x++;
 	}
-	write(1, "\n", 1);
-	exit(1);
+	write(2, "\n", 1);
 }
 
 int	ft_strlen(char *str)
@@ -64,19 +63,19 @@ char	*ft_check_path(char *cmd, char **env)
 		if (access(cmd, F_OK | R_OK | X_OK) == 0)
 			return (cmd);
 		else
-			ft_print_err("Error in the command path");
+			(ft_print_err("Error in the command path"));
 	}
 	paths = ft_get_paths(env);
+	if (!paths || paths[0] == NULL)
+		(ft_free(paths), free(cmd));
 	while (paths && paths[++x])
 	{
-		full_path = ft_strjoin_gnl(paths[x], "/");
-		full_path = ft_strjoin_gnl(full_path, cmd);
+		(full_path = ft_strjoin(paths[x], "/"), full_path = ft_strjoin_gnl(full_path, cmd));
 		if (access(full_path, F_OK | R_OK | X_OK) == 0)
-			return (full_path);
-		free(full_path);
-		full_path = NULL;
+			return (ft_free(paths), full_path);
+		(free(full_path), full_path = NULL);
 	}
-	return (NULL);
+	return (ft_free(paths), NULL);
 }
 
 char	**ft_get_paths(char **env)

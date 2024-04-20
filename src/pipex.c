@@ -6,11 +6,11 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:38:42 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/18 22:05:24 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/21 01:24:08 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./pipex.h"
+#include "../includes/pipex.h"
 
 int	main(int argc, char *argv[], char *envp[])
 {
@@ -21,7 +21,6 @@ int	main(int argc, char *argv[], char *envp[])
 	if (argc != 5)
 		ft_print_err("The usage: i.e ./pipex file1 cmd1 cmd2 file2");
 	ft_pipex(&data, argv, envp);
-	return (0);
 }
 
 void	ft_pipex(t_pipex *data, char **args, char **env)
@@ -53,7 +52,7 @@ void	*ft_first_child_process(t_pipex *data, char **args, char **env)
 
 	close(data->fd[0]);
 	data->in_file = open(args[1], O_RDONLY);
-	if (data->in_file == -1)
+	if (data->in_file < 0)
 	{
 		if (access(args[1], W_OK) != 0)
 			return (close(data->fd[1]), ft_print_err("Permission denied, you can't open this file!"), NULL);
@@ -73,13 +72,21 @@ void	*ft_first_child_process(t_pipex *data, char **args, char **env)
 	close(data->fd[1]);
 	cmd = ft_split(args[2], ' ');
 	if (cmd == NULL || cmd[0] == NULL)
-		return (ft_free(cmd), exit(127), NULL);
+	{
+		ft_free(cmd);
+		return (NULL);
+	}
 	la_path = ft_check_path(cmd[0], env);
 	close(data->in_file);
-	execve(la_path, cmd, env);
-	ft_print_err("An error has occured on execev");
-	exit(1);
-	// return (free(cmd), free(la_path), la_path = NULL, NULL);
+	if (execve(la_path, cmd, env) == -1)
+	{
+		ft_free(cmd);
+		free(la_path);
+		ft_print_err("Command not found!");
+		exit(1);
+	}
+	return (ft_free(cmd), free(la_path), la_path = NULL,
+		ft_print_err("Command not found!"), NULL);
 }
 
 void	*ft_second_child_process(t_pipex *data, char **args, char **env)
@@ -107,11 +114,21 @@ void	*ft_second_child_process(t_pipex *data, char **args, char **env)
 	}
 	close(data->fd[0]);
 	cmd = ft_split(args[3], ' ');
-	if (cmd == NULL || cmd[0] == NULL)
-		return (free(cmd), exit(127), NULL);
+	if (cmd == NULL || cmd[0] == NULL )
+	{
+		ft_print_err("We are here!");
+		ft_free(cmd);
+		return (NULL);
+	}
 	la_path = ft_check_path(cmd[0], env);
 	close(data->out_file);
-	execve(la_path, cmd, env);
-	exit(1);
-	// return (free(cmd), free(la_path), NULL);
+	if (execve(la_path, cmd, env) == -1) 
+	{
+		ft_free(cmd);
+		free(la_path);
+		ft_print_err("Command not found!");
+		exit(1);
+	}
+	return (ft_free(cmd), free(la_path), la_path = NULL,
+		ft_print_err("Command not found!"), NULL);
 }

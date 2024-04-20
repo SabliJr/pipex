@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:21:39 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/18 20:32:59 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/21 01:18:05 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ char		*ft_check_path(char *cmd, char **env);
 void		*ft_calloc(size_t nmemb, size_t size);
 void		ft_bzero(void *a, size_t n);
 void		ft_free(char **arr);
+char		*ft_strjoin(char *s1, char *s2);
 
 #endif
