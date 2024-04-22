@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:46:02 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/21 01:22:22 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/22 16:11:12 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ char	*ft_check_path(char *cmd, char **env)
 		(ft_free(paths), free(cmd));
 	while (paths && paths[++x])
 	{
-		(full_path = ft_strjoin(paths[x], "/"), full_path = ft_strjoin_gnl(full_path, cmd));
+		full_path = ft_strjoin(paths[x], "/");
+		full_path = ft_strjoin_gnl(full_path, cmd);
 		if (access(full_path, F_OK | R_OK | X_OK) == 0)
 			return (ft_free(paths), full_path);
 		(free(full_path), full_path = NULL);

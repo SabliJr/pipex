@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 16:15:06 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/19 17:20:30 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/22 16:09:19 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-
 
 // int	main(void)
 // {

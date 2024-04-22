@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   general_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/22 16:11:49 by sabakar-          #+#    #+#             */
+/*   Updated: 2024/04/22 16:14:50 by sabakar-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/pipex.h"
 
 void	*ft_calloc(size_t nmemb, size_t size)
@@ -25,9 +37,9 @@ void	ft_bzero(void *a, size_t n)
 	}
 }
 
-void ft_free (char **arr)
+void	ft_free(char **arr)
 {
-	int x;
+	int	x;
 
 	x = 0;
 	if (!arr)
@@ -52,7 +64,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	s_len = ft_strlen(s1);
-	total_len = ft_strlen(s1) + ft_strlen(s2);
+	total_len = (ft_strlen(s1) + ft_strlen(s2));
 	new_arr = (char *)malloc(sizeof(char) * (total_len + 1));
 	if (!new_arr)
 		return (NULL);
