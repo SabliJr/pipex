@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 16:11:49 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/22 16:14:50 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/22 17:12:08 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_free(char **arr)
 	arr = NULL;
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_join(char *s1, char *s2)
 {
 	char	*new_arr;
 	int		i;

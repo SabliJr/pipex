@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:21:39 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/22 16:08:01 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/22 17:12:20 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <string.h>
 
 typedef struct s_pipex
 {
@@ -33,8 +34,8 @@ typedef struct s_pipex
 	int		out_file;
 }			t_pipex;
 
-# define PER_ERR "Permission denied, \
-	you can't open this file! Or file doesn't exit"
+# define PER_ERR "Permission denied, you can't open this file!\
+ Or file doesn't exit"
 # define CMD_ERR "Command not found!"
 # define OPEN_ERR "Error opening file"
 # define DUP_ERR "An err has occoured with dup2"
@@ -51,7 +52,7 @@ char		*ft_check_path(char *cmd, char **env);
 void		*ft_calloc(size_t nmemb, size_t size);
 void		ft_bzero(void *a, size_t n);
 void		ft_free(char **arr);
-char		*ft_strjoin(char *s1, char *s2);
+char		*ft_join(char *s1, char *s2);
 void		ft_err(t_pipex *data);
 
 #endif

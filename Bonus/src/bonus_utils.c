@@ -1,39 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_utils.c                                      :+:      :+:    :+:   */
+/*   bonus_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/05 11:46:02 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/22 17:18:13 by sabakar-         ###   ########.fr       */
+/*   Created: 2024/04/22 22:12:57 by sabakar-          #+#    #+#             */
+/*   Updated: 2024/04/22 22:14:28 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
-
-void	ft_print_err(const char *str)
-{
-	int	x;
-
-	x = 0;
-	while (str[x])
-	{
-		write(2, &str[x], 1);
-		x++;
-	}
-	write(2, "\n", 1);
-}
-
-int	ft_strlen(char *str)
-{
-	int	x;
-
-	x = 0;
-	while (str[x])
-		x++;
-	return (x);
-}
 
 int	ft_strncmp(char *str1, char *str2, int len)
 {
@@ -58,7 +35,7 @@ char	*ft_check_path(char *cmd, char **env)
 	x = -1;
 	if (access(cmd, F_OK | R_OK | X_OK) == 0)
 		return (cmd);
-	if (ft_strncmp(cmd, "/", 5) == 0)
+	if (ft_strncmp(cmd, "/", 1) == 0)
 	{
 		if (access(cmd, F_OK | R_OK | X_OK) == 0)
 			return (cmd);

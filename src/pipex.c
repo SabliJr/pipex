@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:38:42 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/22 16:20:17 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/22 17:01:09 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	ft_first_child_process(t_pipex *data, char **args, char **env)
 	if (dup2(data->fd[1], 1) == -1)
 		ft_err(data);
 	close(data->fd[1]);
-	cmd = ft_split(args[2], ' ');
+	cmd = ft_split(args[2], 32);
 	if (cmd == NULL || cmd[0] == NULL)
 		(ft_free(cmd), exit(EXIT_FAILURE));
 	la_path = ft_check_path(cmd[0], env);
@@ -98,7 +98,7 @@ void	ft_second_child_process(t_pipex *data, char **args, char **env)
 	if (dup2(data->fd[0], 0) == -1)
 		ft_err(data);
 	close(data->fd[0]);
-	cmd = ft_split(args[3], ' ');
+	cmd = ft_split(args[3], 32);
 	if (cmd == NULL || cmd[0] == NULL)
 		(ft_free(cmd), exit(EXIT_FAILURE));
 	la_path = ft_check_path(cmd[0], env);
