@@ -6,11 +6,11 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 21:19:08 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/22 21:26:31 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/24 04:04:33 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex_bonus.h"
+#include "../../includes/pipex_bonus.h"
 
 void	ft_free(char **arr)
 {
@@ -27,7 +27,7 @@ void	ft_free(char **arr)
 	arr = NULL;
 }
 
-int	ft_strncmp(char *s1, char *s2, int len)
+int	ft_strncmp_b(char *s1, char *s2, int len)
 {
 	int	x;
 

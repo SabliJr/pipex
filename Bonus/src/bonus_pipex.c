@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   bonus_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:33:45 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/22 23:37:53 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/24 04:04:44 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex_bonus.h"
+#include "../../includes/pipex_bonus.h"
 
 int	main(int ac, char *av[], char *env[])
 {
-	t_pipex_bonus	*data;
-	int				x;
+	t_pipex_bonus	data;
 
 	if (!env)
 		ft_put_err("Error: Empty environment!");
 	if (ac < 5)
-		ft_ptint_err("Please provide suficent commands");
-	if (!ft_strncmp(av[1], "here_doc", 9) && ac == 6)
+		ft_put_err("Please provide suficent commands");
+	if (!ft_strncmp_b(av[1], "here_doc", 9) && ac == 6)
 	{
-		data->arg_num = ac;
+		data.arg_num = ac;
 		ft_handle_here_doc(&data, av, env);
 	}
 	else if (ac >= 5)
 	{
-		data->arg_num = ac;
-		data->flag = 0;
+		data.arg_num = ac;
+		data.flag = 0;
 		ft_pipex(&data, av, env);
 	}
 	else
