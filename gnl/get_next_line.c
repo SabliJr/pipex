@@ -6,11 +6,11 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 16:15:06 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/22 16:09:19 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/23 11:03:37 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../includes/get_next_line.h"
 
 char	*helper_ft(int fd, char *updated)
 {

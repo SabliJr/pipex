@@ -6,14 +6,14 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:21:39 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/22 17:12:20 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/23 11:05:47 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "../gnl/get_next_line.h"
+# include "./get_next_line.h"
 # include <fcntl.h>
 # include <limits.h>
 # include <stdio.h>

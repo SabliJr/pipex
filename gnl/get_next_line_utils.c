@@ -6,11 +6,11 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 14:09:39 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/21 01:10:21 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/04/23 11:03:49 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../includes/get_next_line.h"
 
 int	has_end(char *str)
 {
