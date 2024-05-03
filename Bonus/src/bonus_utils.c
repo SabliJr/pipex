@@ -6,42 +6,13 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:12:57 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/24 04:05:18 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/03 08:34:25 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
 
-char	*ft_check_path(char *cmd, char **env)
-{
-	char	**paths;
-	char	*fpath;
-	int		x;
-
-	x = -1;
-	if (access(cmd, F_OK | R_OK | X_OK) == 0)
-		return (cmd);
-	if (ft_strncmp_b(cmd, "/", 1) == 0)
-	{
-		if (access(cmd, F_OK | R_OK | X_OK) == 0)
-			return (cmd);
-		(ft_put_err("Error in the command path"));
-	}
-	paths = ft_get_paths(env);
-	if (!paths || paths[0] == NULL)
-		(ft_free(paths), free(cmd));
-	while (paths && paths[++x])
-	{
-		fpath = ft_join(paths[x], "/");
-		fpath = ft_strjoin_gnl(fpath, cmd);
-		if (access(fpath, F_OK | R_OK | X_OK) == 0)
-			return (ft_free(paths), fpath);
-		(free(fpath), fpath = NULL);
-	}
-	return (ft_free(paths), NULL);
-}
-
-char	**ft_get_paths(char **env)
+char	**ft_find_path(char **env)
 {
 	char	**path;
 	int		x;
@@ -53,6 +24,8 @@ char	**ft_get_paths(char **env)
 		if (ft_strncmp_b("PATH", env[x], 4) == 0)
 		{
 			path = ft_split(env[x] + 5, ':');
+			if (!path)
+				ft_process_err();
 			return (path);
 		}
 		x++;
@@ -82,4 +55,53 @@ char	*ft_join(char *s1, char *s2)
 		new_arr[s_len + i] = s2[i];
 	new_arr[s_len + i] = '\0';
 	return (new_arr);
+}
+
+void	ft_execute(char *av, char *env[])
+{
+	int	x;
+	char	**cmd;
+	char	**paths;
+	char	*la_path;
+	
+	x = 1;
+	cmd = ft_split(av, ' ');
+	paths = ft_find_path(env);
+	la_path = ft_get_cmd(cmd[0], paths);
+	if (execve(la_path, cmd, env) == -1)
+		ft_putstr("An err with execve");
+}
+
+char	*ft_get_cmd (char *cmd, char *env[])
+{
+	char	*fpath;
+	int	x;
+
+	x = 0;
+	while (env[x])
+	{
+		fpath = ft_join(env[x], "/");
+		fpath = ft_strjoin_gnl(fpath, cmd);
+		if (access(fpath, F_OK) == 0)
+			return (fpath);
+		(free(fpath), x++);
+	}
+	ft_cmd_err(cmd);
+	return (NULL);
+}
+
+int	ft_open_file(char	*av, int x)
+{
+	int	fd;
+	
+	fd = 0;
+	if (x == 0)
+		fd = open(av, O_WRONLY |  O_CREAT | O_APPEND, 0777);
+	else if (x == 1)
+		fd = open(av, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	else if (x == 2)
+		fd = open(av, O_RDONLY, 0777);
+	if (fd == -1)
+		ft_file_err(av);
+	return (fd);
 }
