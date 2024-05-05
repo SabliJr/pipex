@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:38:42 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/22 17:01:09 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/05 15:41:53 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ int	main(int argc, char *argv[], char *envp[])
 	t_pipex	data;
 
 	if (!envp)
-		ft_print_err("The the env is empty!");
+		(ft_print_err("The env is empty!"), exit(EXIT_FAILURE));
 	if (argc != 5)
-		ft_print_err("The usage: i.e ./pipex file1 cmd1 cmd2 file2");
+		(ft_print_err("The usage: i.e ./pipex file1 cmd1 cmd2 file2"),
+			exit(EXIT_FAILURE));
 	return (ft_pipex(&data, argv, envp));
 }
 
@@ -29,15 +30,15 @@ int	ft_pipex(t_pipex *data, char **args, char **env)
 
 	status = 0;
 	if (pipe(data->fd) == -1)
-		ft_print_err("An Error with pipe\n");
+		(ft_print_err("An Error with pipe\n"), exit(EXIT_FAILURE));
 	data->child1 = fork();
 	if (data->child1 < 0)
-		ft_print_err("An Error has occuered with Fork child1");
+		(ft_print_err(FORK_C1), exit(EXIT_FAILURE));
 	if (data->child1 == 0)
 		ft_first_child_process(data, args, env);
 	data->child2 = fork();
 	if (data->child2 < 0)
-		ft_print_err("An Error has occuered with Fork child2");
+		(ft_print_err(FORK_C2), exit(EXIT_FAILURE));
 	if (data->child2 == 0)
 		ft_second_child_process(data, args, env);
 	close(data->fd[0]);
@@ -58,13 +59,7 @@ void	ft_first_child_process(t_pipex *data, char **args, char **env)
 
 	close(data->fd[0]);
 	data->in_file = open(args[1], O_RDONLY);
-	if (data->in_file < 0)
-	{
-		if (access(args[1], W_OK) != 0)
-			(close(data->fd[1]), ft_print_err(PER_ERR), exit(EXIT_FAILURE));
-		else
-			(close(data->fd[1]), ft_print_err(OPEN_ERR), exit(EXIT_FAILURE));
-	}
+	ft_check_file(data, args);
 	if (dup2(data->in_file, 0) == -1)
 		ft_err(data);
 	if (dup2(data->fd[1], 1) == -1)
@@ -75,8 +70,11 @@ void	ft_first_child_process(t_pipex *data, char **args, char **env)
 		(ft_free(cmd), exit(EXIT_FAILURE));
 	la_path = ft_check_path(cmd[0], env);
 	close(data->in_file);
+	if (!la_path)
+		(ft_free(cmd), free(la_path), ft_print_err(CMD_ERR), exit(127));
 	execve(la_path, cmd, env);
-	(free(la_path), ft_free(cmd), ft_print_err(CMD_ERR), exit(127));
+	perror("execve");
+	(ft_free(cmd), ft_print_err(CMD_ERR), exit(127));
 }
 
 void	ft_second_child_process(t_pipex *data, char **args, char **env)
@@ -103,8 +101,9 @@ void	ft_second_child_process(t_pipex *data, char **args, char **env)
 		(ft_free(cmd), exit(EXIT_FAILURE));
 	la_path = ft_check_path(cmd[0], env);
 	close(data->out_file);
-	execve(la_path, cmd, env);
-	(ft_free(cmd), free(la_path), ft_print_err(CMD_ERR), exit(127));
+	if (!la_path)
+		(ft_free(cmd), free(la_path), ft_print_err(CMD_ERR), exit(127));
+	(execve(la_path, cmd, env), ft_free(cmd), ft_print_err(CMD_ERR), exit(127));
 }
 
 void	ft_err(t_pipex *data)

@@ -6,23 +6,31 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:46:02 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/22 17:18:13 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/05 15:41:38 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-void	ft_print_err(const char *str)
+void	ft_print_err(char *str)
 {
-	int	x;
+	int		x;
+	int		len;
+	char	*new_str;
 
+	len = ft_strlen(str);
 	x = 0;
+	new_str = (char *)malloc(sizeof(char) * len + 1);
+	if (!new_str)
+		return ;
 	while (str[x])
 	{
-		write(2, &str[x], 1);
+		new_str[x] = str[x];
 		x++;
 	}
-	write(2, "\n", 1);
+	new_str[x] = '\n';
+	write(2, new_str, len + 1);
+	free(new_str);
 }
 
 int	ft_strlen(char *str)
@@ -53,28 +61,19 @@ char	*ft_check_path(char *cmd, char **env)
 {
 	char	**paths;
 	char	*fpath;
-	int		x;
 
-	x = -1;
-	if (access(cmd, F_OK | R_OK | X_OK) == 0)
-		return (cmd);
-	if (ft_strncmp(cmd, "/", 5) == 0)
-	{
-		if (access(cmd, F_OK | R_OK | X_OK) == 0)
-			return (cmd);
-		(ft_print_err("Error in the command path"));
-	}
+	fpath = check_cmd_access(cmd);
+	if (fpath != NULL)
+		return (fpath);
+	fpath = check_cmd_path(cmd);
+	if (fpath != NULL)
+		return (fpath);
 	paths = ft_get_paths(env);
 	if (!paths || paths[0] == NULL)
-		(ft_free(paths), free(cmd));
-	while (paths && paths[++x])
-	{
-		fpath = ft_join(paths[x], "/");
-		fpath = ft_strjoin_gnl(fpath, cmd);
-		if (access(fpath, F_OK | R_OK | X_OK) == 0)
-			return (ft_free(paths), fpath);
-		(free(fpath), fpath = NULL);
-	}
+		return (cmd);
+	fpath = check_paths(paths, cmd);
+	if (fpath != NULL)
+		return (fpath);
 	return (ft_free(paths), NULL);
 }
 
@@ -84,7 +83,6 @@ char	**ft_get_paths(char **env)
 	int		x;
 
 	x = 0;
-	path = NULL;
 	while (env[x])
 	{
 		if (ft_strncmp("PATH", env[x], 4) == 0)

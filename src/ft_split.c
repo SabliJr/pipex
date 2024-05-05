@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:29:07 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/19 13:35:45 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/05 15:40:52 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,8 @@ char	**ft_split(char const *s, char c)
 	if (!tab)
 		return (NULL);
 	lens = (int *)ft_calloc(sizeof(*lens), (word + 1));
+	if (lens == NULL)
+		return (free(tab), NULL);
 	ft_words_len(s, c, lens);
 	while (++i < word)
 		tab[i] = (char *)ft_calloc(sizeof(**tab), lens[i] + 1);
@@ -135,7 +137,5 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	}
 	ft_fill_tab(s, c, tab, lens);
-	tab[word] = 0;
-	free(lens);
-	return (tab);
+	return ((tab[word] = 0), free(lens), tab);
 }
