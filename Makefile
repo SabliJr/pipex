@@ -1,4 +1,5 @@
 NAME = pipex
+BONUS_NAME = pipex_bonus
 
 RED:="\033[1;31m"
 GREEN:="\033[1;32m"
@@ -15,6 +16,7 @@ PIPEX_FILES = ./src/pipex.c\
 			./src/pipex_utils.c \
 			./src/ft_split.c \
 			./src/general_utils.c \
+			./src/extra_fts.c
 
 PIPEX_BONUS_FILES = ./Bonus/src/bonus_pipex.c \
 					./Bonus/src/bonus_utils.c \
@@ -39,11 +41,13 @@ $(NAME): $(OBJS)
 	${CC} ${CFLAGS} ${OBJS} -o $(NAME)
 	echo $(GREEN) "[OK COMPILED]" $(EOC)
 
-b: ${OBJS_BONUS}
-	${CC} ${CFLAGS} ${OBJS_BONUS} -o $(NAME)
+$(BONUS_NAME): ${OBJS_BONUS}
+	${CC} ${CFLAGS} ${OBJS_BONUS} -o $(BONUS_NAME)
 	echo $(YELLOW) "[OK BOUNS COMPILED]"
 
-all: $(NAME)
+bonus: $(BONUS_NAME)
+
+all: $(NAME) $(BONUS_NAME)
 
 clean:
 	rm -f $(OBJS)
@@ -52,7 +56,7 @@ clean:
 
 fclean:
 	rm -f $(NAME)
-	rm -f $(OBJS_BONUS)
+	rm -f $(BONUS_NAME)
 	echo $(ORANGE) "[🧹Cleaning Names...🧹]" $(EOC)
 
 re: fclean all

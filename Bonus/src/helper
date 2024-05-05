@@ -1,0 +1,25 @@
+ls | cat | grep | pwd
+1      2    3      4
+
+ecrit lis\ecrit lit\ ecrit lis
+
+// while ()
+// {
+//     if (index != 0)
+//         lis
+//     if (index != max)
+//         ecrit
+//     close (0)
+//     close (1)
+
+//     redirection
+// }
+
+while (x)
+{
+     if (i < x - 2)
+     {
+        data->pipe[i];
+        close(0)
+     }
+}

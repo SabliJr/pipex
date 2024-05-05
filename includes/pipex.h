@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:21:39 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/23 11:05:47 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/05 15:42:47 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,15 @@ typedef struct s_pipex
 	int		out_file;
 }			t_pipex;
 
-# define PER_ERR "Permission denied, you can't open this file!\
- Or file doesn't exit"
+# define PER_ERR "Permission denied, you can't \
+ open this file! Or file doesn't exit"
 # define CMD_ERR "Command not found!"
 # define OPEN_ERR "Error opening file"
 # define DUP_ERR "An err has occoured with dup2"
+# define FORK_C2 "An Error has occuered with Fork child2"
+# define FORK_C1 "An Error has occuered with Fork child1"
 
-void		ft_print_err(const char *str);
+void		ft_print_err(char *str);
 int			ft_strlen(char *str);
 int			ft_strncmp(char *str1, char *str2, int len);
 int			ft_pipex(t_pipex *data, char **args, char **env);
@@ -54,5 +56,9 @@ void		ft_bzero(void *a, size_t n);
 void		ft_free(char **arr);
 char		*ft_join(char *s1, char *s2);
 void		ft_err(t_pipex *data);
+void		ft_check_file(t_pipex *data, char **args);
+char		*check_cmd_access(char *cmd);
+char		*check_cmd_path(char *cmd);
+char		*check_paths(char **paths, char *cmd);
 
 #endif
