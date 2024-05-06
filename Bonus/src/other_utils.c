@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 08:43:22 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/03 08:44:03 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/06 07:30:05 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,43 @@ void	ft_bzero(void *a, size_t n)
 		((unsigned char *)a)[i] = 0;
 		i++;
 	}
+}
+
+int	ft_init_data (t_pipex_bonus *data, int ac, char *av[], char *envp[])
+{
+	if (ac < 5)
+		ft_err_handler(data, 3, NULL);
+	if (ft_strncmp_b(av[1], "here_doc", 8) == 0)
+		data->here_doc = TRUE;
+	else
+		data->here_doc = FALSE;
+	if (data->here_doc && ac < 6)
+		ft_err_handler(data, 3, NULL);
+	data->argc = ac;
+	data->argv = av;
+	data->env = envp;
+	ft_get_path(data);
+	if (data->here_doc)
+		return (3);
+	return (2);
+}
+
+char	*ft_strdup(char *s)
+{
+	size_t	len;
+	char	*new_str;
+	size_t	x;
+
+	x = 0;
+	len = ft_strlen(s) + 1;
+	new_str = (char *) ft_calloc(len, sizeof (char));
+	if (!new_str)
+		return (NULL);
+	while (x < len)
+	{
+		new_str[x] = s[x];
+		x++;
+	}
+	new_str[x] = '\0';
+	return (new_str);
 }

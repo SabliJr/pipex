@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 21:19:08 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/03 08:21:59 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/06 07:17:31 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,31 +62,4 @@ void	ft_putstr(char *sr)
 		x++;
 	}
 	write(2, "\n", 1);
-}
-
-int	ft_get_next_line (char **line)
-{
-	char	*buff;
-	int	x;
-	int	red;
-	char	c;
-
-	x = 0;
-	red = 0;
-	buff = (char *)malloc(1024);
-	if (!buff)
-		return (-1);
-	red = read(0, &c, 1);
-	while (red && c != '\n' && c != '\0')
-	{
-		if (c != '\n' && c != '\0')
-			buff[x] = c;
-		x++;
-		red = read(0, &c, 1);
-	}
-	buff[x] = '\n';
-	buff[++x] = '\0';
-	*line = buff;
-	free(buff);
-	return (red);
 }
