@@ -6,31 +6,46 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:12:57 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/03 08:34:25 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/06 07:21:22 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
 
-char	**ft_find_path(char **env)
+void	ft_get_path (t_pipex_bonus *data)
 {
-	char	**path;
-	int		x;
+	char	**paths;
+	char	**envp;
 
-	x = 0;
-	path = NULL;
-	while (env[x])
+	envp = data->env;
+	while (ft_strncmp_b(*envp, "PATH=", 5) != 0)
+		envp++;
+	*envp += 5;
+	paths = ft_split(*envp, ':');
+	if (paths == NULL || paths[0] == NULL)
+		ft_err_handler(data, 2, NULL);
+	data->paths = paths;
+}
+
+void	ft_execute (t_pipex_bonus *data, char *cmd)
+{
+	char	*cmd_path;
+	char	*unfound_cmd;
+	char	**cmd_argv;
+
+	if (cmd[0] == '\0')
+		ft_err_handler(data, 127, NULL);
+	cmd_argv = ft_split(cmd, 32);
+	if (cmd_argv == NULL)
+		ft_err_handler(data, 2, NULL);
+	cmd_path = ft_find_executable(data, cmd_argv[0]);
+	if (cmd_path == NULL)
 	{
-		if (ft_strncmp_b("PATH", env[x], 4) == 0)
-		{
-			path = ft_split(env[x] + 5, ':');
-			if (!path)
-				ft_process_err();
-			return (path);
-		}
-		x++;
+		unfound_cmd = ft_strdup(cmd_argv[0]);
+		ft_free(cmd_argv);
+		ft_err_handler(data, 127, unfound_cmd);
 	}
-	return (NULL);
+	execve(cmd_path, cmd_argv, data->env);
 }
 
 char	*ft_join(char *s1, char *s2)
@@ -57,51 +72,28 @@ char	*ft_join(char *s1, char *s2)
 	return (new_arr);
 }
 
-void	ft_execute(char *av, char *env[])
-{
-	int	x;
-	char	**cmd;
-	char	**paths;
-	char	*la_path;
-	
-	x = 1;
-	cmd = ft_split(av, ' ');
-	paths = ft_find_path(env);
-	la_path = ft_get_cmd(cmd[0], paths);
-	if (execve(la_path, cmd, env) == -1)
-		ft_putstr("An err with execve");
-}
-
-char	*ft_get_cmd (char *cmd, char *env[])
+char	*ft_find_executable (t_pipex_bonus *data, char *cmd)
 {
 	char	*fpath;
+	char	*tmp;
 	int	x;
 
+	if (access(cmd, X_OK) == 0)
+		return (cmd);
 	x = 0;
-	while (env[x])
+	while (data->paths[x])
 	{
-		fpath = ft_join(env[x], "/");
-		fpath = ft_strjoin_gnl(fpath, cmd);
-		if (access(fpath, F_OK) == 0)
+		tmp = ft_join(data->paths[x], "/");
+		fpath = ft_strjoin_gnl(tmp, cmd);
+		free(tmp);
+		if (access(fpath, X_OK) == 0)
 			return (fpath);
 		(free(fpath), x++);
 	}
-	ft_cmd_err(cmd);
 	return (NULL);
 }
 
-int	ft_open_file(char	*av, int x)
+int	ft_get_exit_status (int exit_status)
 {
-	int	fd;
-	
-	fd = 0;
-	if (x == 0)
-		fd = open(av, O_WRONLY |  O_CREAT | O_APPEND, 0777);
-	else if (x == 1)
-		fd = open(av, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	else if (x == 2)
-		fd = open(av, O_RDONLY, 0777);
-	if (fd == -1)
-		ft_file_err(av);
-	return (fd);
+	return (((exit_status & 0xff00) >> 8));
 }

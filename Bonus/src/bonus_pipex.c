@@ -6,106 +6,110 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:33:45 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/03 08:38:11 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/06 06:15:12 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
 
-int	main(int ac, char *av[], char *env[])
+static void	ft_create_childern(t_pipex_bonus *data, int cmd_index);
+static void	ft_run_first_cmd (t_pipex_bonus *data);
+static void	ft_run_last_cmd (t_pipex_bonus *data);
+static void	ft_run_middle_cmd (t_pipex_bonus *data, int cmd_index);
+
+int	main(int ac, char *av[], char *envp[])
 {
-	if (ac < 5)
-		ft_args_err();
-	ft_pipex(ac, av, env);
-	return (0);
+	t_pipex_bonus data;
+	int	cmd_index;
+
+	cmd_index = ft_init_data(&data, ac, av, envp);
+	while (cmd_index <= ac - 2)
+		ft_create_childern(&data, cmd_index++);
+	ft_free(data.paths);
+	exit(ft_get_exit_status(data.exit_status_last_cmd));
 }
 
-void	ft_pipex(int ac, char **av, char **env)
+static void	ft_create_childern(t_pipex_bonus *data, int cmd_index)
 {
-	int	x;
+	if (cmd_index == 2 || (cmd_index == 3 && data->here_doc))
+		ft_run_first_cmd(data);
+	else if (cmd_index == data->argc - 2)
+		ft_run_last_cmd(data);
+	else
+		ft_run_middle_cmd(data, cmd_index);
+}
+
+static void	ft_run_first_cmd (t_pipex_bonus *data)
+{
 	int	infile;
+	int	fds[2];
+	pid_t pid;
+
+	if (pipe(fds) == -1)
+		ft_err_handler(data, 1, NULL);
+	if (data->here_doc == TRUE)
+		infile = ft_here_doc(data, data->argv[2]);
+	pid = fork();
+	if (pid == 0)
+	{
+		close(fds[0]);
+		if (data->here_doc == FALSE)
+			infile = ft_open_infile(data, fds);
+		dup2(infile, STDERR_FILENO);
+		dup2(fds[1], STDOUT_FILENO);
+		close(infile);
+		close(fds[1]);
+		ft_execute(data, data->argv[2 + data->here_doc]);
+	}
+	dup2(fds[0], STDERR_FILENO);
+	close(fds[0]);
+	close(fds[1]);
+	if (data->here_doc == TRUE)
+		close(infile);
+}
+
+static void	ft_run_last_cmd (t_pipex_bonus *data)
+{
+	char *lsat_cmd;
+	int	exit_status;
 	int	outfile;
+	pid_t pid;
 
-	if (!ft_strncmp_b("here_doc", av[1], ft_strlen("here_doc")))
-	{
-		x = 3;
-		outfile = ft_open_file(av[ac - 1], 0);
-		if (ac < 6)
-			ft_args_err();
-		ft_here_doc(av[2]);
-	}
-	else
-	{
-		x = 2;
-		outfile = ft_open_file(av[ac - 1], 1);
-		infile = ft_open_file(av[1], 2);
-		dup2(infile, 0);
-	}
-	while (x < ac - 2)
-		ft_child_process(av[x++], env);
-	dup2(outfile, 1);
-	ft_execute(av[ac - 2], env);
-	close(infile);
-	close(outfile);
-}
-
-void	ft_child_process(char *av, char *env[])
-{
-	pid_t	pid;
-	int		p[2];
-
-	if (pipe(p) == -1)
-		ft_process_err();
+	lsat_cmd = data->argv[data->argc - 2];
 	pid = fork();
-	if (pid == -1)
-		ft_process_err();
 	if (pid == 0)
 	{
-		close(p[0]);
-		dup2(p[1], 1);
-		ft_execute(av, env);
+		outfile = ft_open_outfile(data);
+		dup2(outfile, STDOUT_FILENO);
+		close(outfile);
+		ft_execute(data, lsat_cmd);
 	}
-	else
-	{
-		close(p[1]);
-		dup2(p[0], 0);
-		waitpid(pid, NULL, 0);
-	}
+	close(STDOUT_FILENO);
+	waitpid(pid, &exit_status, 0);
+	data->exit_status_last_cmd = exit_status;
 }
 
-void	ft_here_doc(char *limiter)
+static void	ft_run_middle_cmd (t_pipex_bonus *data, int cmd_index)
 {
-	pid_t	pid;
-	int		p[2];
+	char	*middle_cmds;
+	int		fds[2];
+	pid_t pid;
 
-	if (pipe(p) == -1)
-		ft_process_err();
+	middle_cmds = data->argv[cmd_index];
+	if (pipe(fds) == -1)
+		ft_err_handler(data, 1, NULL);
 	pid = fork();
-	if (pid == -1)
-		ft_process_err();
 	if (pid == 0)
 	{
-		close(p[0]);
-		ft_process_here_doc(p[1], limiter);
+		close(fds[0]);
+		dup2(fds[1], STDOUT_FILENO);
+		close(fds[1]);
+		ft_execute(data, middle_cmds);
 	}
 	else
 	{
-		close(p[0]);
-		dup2(p[0], 0);
-		wait(NULL);
-	}
-}
-
-void	ft_process_here_doc(int fd, char *limiter)
-{
-	char *line;
-
-	write(1, "heredoc> ", 9);
-	while (ft_get_next_line(&line))
-	{
-		if (!ft_strncmp_b(line, limiter, ft_strlen(line)))
-			exit(EXIT_SUCCESS);
-		write(fd, line, ft_strlen(line));
-		write(1, "heredoc> ", 9);
+		close(fds[1]);
+		dup2(fds[0], STDIN_FILENO);
+		close(fds[0]);
 	}
 }

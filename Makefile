@@ -22,8 +22,8 @@ PIPEX_BONUS_FILES = ./Bonus/src/bonus_pipex.c \
 					./Bonus/src/bonus_utils.c \
 					./Bonus/src/bonus_general.c \
 					./Bonus/src/ft_split.c \
-					./Bonus/src/put_errs.c \
-					./Bonus/src/other_utils.c
+					./Bonus/src/other_utils.c \
+					./Bonus/src/doc_and_opens.c
 
 CC = cc
 CFLAGS = -Werror -Wall -Wextra -g3
