@@ -6,13 +6,13 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 13:29:07 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/05 15:40:52 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/06 14:29:34 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-static	int	ft_count_words(const char *str, char c)
+static int	ft_count_words(const char *str, char c)
 {
 	int	i;
 	int	words;
@@ -35,7 +35,7 @@ static	int	ft_count_words(const char *str, char c)
 	return (words);
 }
 
-static	void	ft_fill_tab(const char *str, char c, char **tab, int *lens)
+static void	ft_fill_tab(const char *str, char c, char **tab, int *lens)
 {
 	int	i;
 	int	j;
@@ -54,7 +54,7 @@ static	void	ft_fill_tab(const char *str, char c, char **tab, int *lens)
 	}
 }
 
-static	void	ft_words_len(const char *str, char c, int *lens)
+static void	ft_words_len(const char *str, char c, int *lens)
 {
 	int	i;
 	int	d;
@@ -102,10 +102,10 @@ static int	ft_free_if(char **tab, int word)
 		while (tab && i < word)
 		{
 			if (tab[i])
-				free (tab[i]);
+				free(tab[i]);
 			i++;
 		}
-		free (tab);
+		free(tab);
 		return (1);
 	}
 	return (0);
@@ -133,7 +133,7 @@ char	**ft_split(char const *s, char c)
 		tab[i] = (char *)ft_calloc(sizeof(**tab), lens[i] + 1);
 	if (ft_free_if(tab, word))
 	{
-		free (lens);
+		free(lens);
 		return (NULL);
 	}
 	ft_fill_tab(s, c, tab, lens);

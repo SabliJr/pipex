@@ -6,12 +6,11 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 08:43:22 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/06 07:30:05 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/07 08:28:58 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
-
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
@@ -38,7 +37,7 @@ void	ft_bzero(void *a, size_t n)
 	}
 }
 
-int	ft_init_data (t_pipex_bonus *data, int ac, char *av[], char *envp[])
+int	ft_init_data(t_pipex_bonus *data, int ac, char *av[], char *envp[])
 {
 	if (ac < 5)
 		ft_err_handler(data, 3, NULL);
@@ -51,6 +50,11 @@ int	ft_init_data (t_pipex_bonus *data, int ac, char *av[], char *envp[])
 	data->argc = ac;
 	data->argv = av;
 	data->env = envp;
+	data->pids_num = 0;
+	if (data->here_doc)
+		data->pids = malloc(sizeof(pid_t) * ac - 4);
+	else
+		data->pids = malloc(sizeof(pid_t) * ac - 3);
 	ft_get_path(data);
 	if (data->here_doc)
 		return (3);
@@ -63,9 +67,11 @@ char	*ft_strdup(char *s)
 	char	*new_str;
 	size_t	x;
 
+	if (!s)
+		return (NULL);
 	x = 0;
 	len = ft_strlen(s) + 1;
-	new_str = (char *) ft_calloc(len, sizeof (char));
+	new_str = (char *)ft_calloc(len, sizeof(char));
 	if (!new_str)
 		return (NULL);
 	while (x < len)
@@ -73,6 +79,5 @@ char	*ft_strdup(char *s)
 		new_str[x] = s[x];
 		x++;
 	}
-	new_str[x] = '\0';
 	return (new_str);
 }
