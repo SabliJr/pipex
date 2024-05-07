@@ -43,7 +43,7 @@ $(NAME): $(OBJS)
 
 $(BONUS_NAME): ${OBJS_BONUS}
 	${CC} ${CFLAGS} ${OBJS_BONUS} -o $(BONUS_NAME)
-	echo $(YELLOW) "[OK BOUNS COMPILED]"
+	echo $(YELLOW) "[OK BONUS COMPILED]"
 
 bonus: $(BONUS_NAME)
 

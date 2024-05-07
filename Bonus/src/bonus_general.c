@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 21:19:08 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/06 07:17:31 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/07 06:23:47 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,16 @@ int	ft_strlen(char *sr)
 	return (x);
 }
 
-void	ft_putstr(char *sr)
+void	ft_putstr_fd(char *s, int fd)
 {
-	int x;
+	int	i;
 
-	x = 0;
-	while (sr[x])
+	i = 0;
+	if (!s)
+		return ;
+	while (s[i] != '\0')
 	{
-		write(2, &sr[x], 1);
-		x++;
+		write(fd, &s[i], 1);
+		i++;
 	}
-	write(2, "\n", 1);
 }

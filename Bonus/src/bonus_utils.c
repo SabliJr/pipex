@@ -6,13 +6,13 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:12:57 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/06 07:21:22 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/07 08:27:05 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
 
-void	ft_get_path (t_pipex_bonus *data)
+void	ft_get_path(t_pipex_bonus *data)
 {
 	char	**paths;
 	char	**envp;
@@ -27,7 +27,7 @@ void	ft_get_path (t_pipex_bonus *data)
 	data->paths = paths;
 }
 
-void	ft_execute (t_pipex_bonus *data, char *cmd)
+void	ft_execute(t_pipex_bonus *data, char *cmd)
 {
 	char	*cmd_path;
 	char	*unfound_cmd;
@@ -36,7 +36,7 @@ void	ft_execute (t_pipex_bonus *data, char *cmd)
 	if (cmd[0] == '\0')
 		ft_err_handler(data, 127, NULL);
 	cmd_argv = ft_split(cmd, 32);
-	if (cmd_argv == NULL)
+	if (cmd_argv == NULL || cmd_argv[0] == NULL)
 		ft_err_handler(data, 2, NULL);
 	cmd_path = ft_find_executable(data, cmd_argv[0]);
 	if (cmd_path == NULL)
@@ -72,11 +72,11 @@ char	*ft_join(char *s1, char *s2)
 	return (new_arr);
 }
 
-char	*ft_find_executable (t_pipex_bonus *data, char *cmd)
+char	*ft_find_executable(t_pipex_bonus *data, char *cmd)
 {
 	char	*fpath;
 	char	*tmp;
-	int	x;
+	int		x;
 
 	if (access(cmd, X_OK) == 0)
 		return (cmd);
@@ -85,7 +85,6 @@ char	*ft_find_executable (t_pipex_bonus *data, char *cmd)
 	{
 		tmp = ft_join(data->paths[x], "/");
 		fpath = ft_strjoin_gnl(tmp, cmd);
-		free(tmp);
 		if (access(fpath, X_OK) == 0)
 			return (fpath);
 		(free(fpath), x++);
@@ -93,7 +92,7 @@ char	*ft_find_executable (t_pipex_bonus *data, char *cmd)
 	return (NULL);
 }
 
-int	ft_get_exit_status (int exit_status)
+int	ft_get_exit_status(int exit_status)
 {
 	return (((exit_status & 0xff00) >> 8));
 }

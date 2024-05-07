@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:38:42 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/05 15:41:53 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/07 08:35:09 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ int	main(int argc, char *argv[], char *envp[])
 	if (argc != 5)
 		(ft_print_err("The usage: i.e ./pipex file1 cmd1 cmd2 file2"),
 			exit(EXIT_FAILURE));
+	if (ft_strncmp(argv[1], "./", 2) == 0)
+		(write(2, argv[2], ft_strlen(argv[2])),
+			ft_print_err(": Is a directory"), exit(EXIT_FAILURE));
 	return (ft_pipex(&data, argv, envp));
 }
 
@@ -67,13 +70,15 @@ void	ft_first_child_process(t_pipex *data, char **args, char **env)
 	close(data->fd[1]);
 	cmd = ft_split(args[2], 32);
 	if (cmd == NULL || cmd[0] == NULL)
-		(ft_free(cmd), exit(EXIT_FAILURE));
+		(ft_free(cmd), close(data->fd[0]), close(data->fd[1]),
+			close(data->in_file), exit(EXIT_FAILURE));
 	la_path = ft_check_path(cmd[0], env);
 	close(data->in_file);
 	if (!la_path)
+	{
 		(ft_free(cmd), free(la_path), ft_print_err(CMD_ERR), exit(127));
+	}
 	execve(la_path, cmd, env);
-	perror("execve");
 	(ft_free(cmd), ft_print_err(CMD_ERR), exit(127));
 }
 
@@ -95,10 +100,10 @@ void	ft_second_child_process(t_pipex *data, char **args, char **env)
 		ft_err(data);
 	if (dup2(data->fd[0], 0) == -1)
 		ft_err(data);
-	close(data->fd[0]);
-	cmd = ft_split(args[3], 32);
+	(close(data->fd[0]), cmd = ft_split(args[3], 32));
 	if (cmd == NULL || cmd[0] == NULL)
-		(ft_free(cmd), exit(EXIT_FAILURE));
+		(ft_free(cmd), close(data->fd[1]), close(data->fd[0]),
+			close(data->out_file), exit(EXIT_FAILURE));
 	la_path = ft_check_path(cmd[0], env);
 	close(data->out_file);
 	if (!la_path)
