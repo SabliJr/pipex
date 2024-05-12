@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:38:42 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/07 08:35:09 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/12 15:15:21 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ int	main(int argc, char *argv[], char *envp[])
 	if (argc != 5)
 		(ft_print_err("The usage: i.e ./pipex file1 cmd1 cmd2 file2"),
 			exit(EXIT_FAILURE));
-	if (ft_strncmp(argv[1], "./", 2) == 0)
-		(write(2, argv[2], ft_strlen(argv[2])),
-			ft_print_err(": Is a directory"), exit(EXIT_FAILURE));
+	if (access(argv[1], F_OK | R_OK) == -1)
+	{	
+		write(2, argv[1], ft_strlen(argv[1]));
+		ft_print_err(": No such file or directory");
+	}
 	return (ft_pipex(&data, argv, envp));
 }
 
@@ -75,9 +77,7 @@ void	ft_first_child_process(t_pipex *data, char **args, char **env)
 	la_path = ft_check_path(cmd[0], env);
 	close(data->in_file);
 	if (!la_path)
-	{
 		(ft_free(cmd), free(la_path), ft_print_err(CMD_ERR), exit(127));
-	}
 	execve(la_path, cmd, env);
 	(ft_free(cmd), ft_print_err(CMD_ERR), exit(127));
 }
@@ -92,7 +92,7 @@ void	ft_second_child_process(t_pipex *data, char **args, char **env)
 	if (data->out_file < 0)
 	{
 		if (access(args[4], W_OK) != 0)
-			(close(data->fd[0]), ft_print_err(PER_ERR), exit(EXIT_FAILURE));
+			(close(data->fd[0]), ft_print_err(PER_ERR), exit(127));
 		else
 			(close(data->fd[0]), ft_print_err(OPEN_ERR), exit(EXIT_FAILURE));
 	}

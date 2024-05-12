@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:21:39 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/05 15:42:47 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/10 13:23:37 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <string.h>
+# include <errno.h>
 
 typedef struct s_pipex
 {
@@ -34,8 +35,8 @@ typedef struct s_pipex
 	int		out_file;
 }			t_pipex;
 
-# define PER_ERR "Permission denied, you can't \
- open this file! Or file doesn't exit"
+# define PER_ERR "Permission denied, you can't\
+open this file! Or file doesn't exit, Or it's a directory"
 # define CMD_ERR "Command not found!"
 # define OPEN_ERR "Error opening file"
 # define DUP_ERR "An err has occoured with dup2"

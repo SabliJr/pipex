@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:33:45 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/07 08:26:25 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/12 14:49:27 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ int	main(int ac, char *av[], char *envp[])
 		ft_create_childern(&data, cmd_index++);
 	ft_free(data.paths);
 	while (++x < data.pids_num)
-	{
 		waitpid(data.pids[x], &exit_status, 0);
-	}
 	free(data.pids);
 	exit(ft_get_exit_status(exit_status));
 }
