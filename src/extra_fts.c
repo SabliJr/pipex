@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 15:39:48 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/07 08:29:52 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/10 13:19:15 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_check_file(t_pipex *data, char **args)
 	if (data->in_file < 0)
 	{
 		if (access(args[1], W_OK) != 0)
-			(close(data->fd[1]), ft_print_err(PER_ERR), exit(EXIT_FAILURE));
+			(close(data->fd[1]), ft_print_err(PER_ERR), exit(127));
 		else
 			(close(data->fd[1]), ft_print_err(OPEN_ERR), exit(EXIT_FAILURE));
 	}
