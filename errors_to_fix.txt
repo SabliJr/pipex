@@ -1,0 +1,3 @@
+1- When there's no infile, the program prints no error. So it should print err.
+2- When there's no env "env -i", the program prints command not found error which it shouldn't.
+3- When gives the program args like "../" or "./" the program prints "command not found" which it shouldn't.

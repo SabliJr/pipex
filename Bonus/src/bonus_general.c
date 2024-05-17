@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 21:19:08 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/07 06:23:47 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:29:37 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,25 @@ void	ft_putstr_fd(char *s, int fd)
 		write(fd, &s[i], 1);
 		i++;
 	}
+}
+
+void	ft_print_err(char *str)
+{
+	int x;
+	int len;
+	char *new_str;
+
+	len = ft_strlen(str);
+	x = 0;
+	new_str = (char *)malloc(sizeof(char) * len + 1);
+	if (!new_str)
+		return ;
+	while (str[x])
+	{
+		new_str[x] = str[x];
+		x++;
+	}
+	new_str[x] = '\n';
+	write(2, new_str, len + 1);
+	free(new_str);
 }

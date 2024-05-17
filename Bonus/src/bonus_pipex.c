@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:33:45 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/12 14:49:27 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:30:23 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	main(int ac, char *av[], char *envp[])
 	int				exit_status;
 
 	x = -1;
+	if (!envp || !envp[0])
+		(ft_print_err("The env is empty!"), exit(EXIT_FAILURE));
 	cmd_index = ft_init_data(&data, ac, av, envp);
 	while (cmd_index <= ac - 2)
 		ft_create_childern(&data, cmd_index++);
@@ -32,7 +34,7 @@ int	main(int ac, char *av[], char *envp[])
 	while (++x < data.pids_num)
 		waitpid(data.pids[x], &exit_status, 0);
 	free(data.pids);
-	exit(ft_get_exit_status(exit_status));
+	exit(EXIT_FAILURE);
 }
 
 static void	ft_create_childern(t_pipex_bonus *data, int cmd_index)
@@ -51,6 +53,7 @@ static void	ft_run_first_cmd(t_pipex_bonus *data)
 	int		fds[2];
 	pid_t	pid;
 
+	infile = -100;
 	if (pipe(fds) == -1)
 		ft_err_handler(data, 1, NULL);
 	if (data->here_doc == TRUE)
@@ -64,13 +67,17 @@ static void	ft_run_first_cmd(t_pipex_bonus *data)
 		if (data->here_doc == FALSE)
 			infile = ft_open_infile(data, fds);
 		dup2(infile, STDIN_FILENO);
-		(dup2(fds[1], STDOUT_FILENO), close(infile), close(fds[1]));
+		(dup2(fds[1], STDOUT_FILENO), close(fds[1]));
 		ft_execute(data, data->argv[2 + data->here_doc]);
 	}
 	else
+	{
+		close(fds[0]);
+		close(fds[1]);
 		data->pids[data->pids_num++] = pid;
+	}
 	(dup2(fds[0], STDIN_FILENO), close(fds[0]), close(fds[1]));
-	if (data->here_doc == TRUE)
+	if (data->here_doc == TRUE && infile != -1)
 		close(infile);
 }
 

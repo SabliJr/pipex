@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:34:28 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/07 08:29:27 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/17 17:01:52 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+# define CMD_ERR "Command not found!\n"
 
 enum		e_bool
 {
@@ -63,5 +65,6 @@ int			ft_open_infile(t_pipex_bonus *data, int *x);
 
 void		*ft_calloc(size_t nmemb, size_t size);
 void		ft_bzero(void *a, size_t n);
+void	ft_print_err(char *str);
 
 #endif

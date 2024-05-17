@@ -6,11 +6,30 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:12:57 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/07 08:27:05 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:15:07 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
+
+char *ft_check_if_cmd (char *cmd)
+{
+	int x;
+	char *new_cmd;
+
+	x = 0;
+	new_cmd = malloc(sizeof(char) * ft_strlen(cmd) + 2);
+	if (!new_cmd)
+		return (NULL);
+	while (cmd[x])
+	{
+		new_cmd[x] = cmd[x];
+		x++;
+	}
+	new_cmd[x] = '/';
+	new_cmd[++x] = '\0';
+	return (new_cmd);
+}
 
 void	ft_get_path(t_pipex_bonus *data)
 {
@@ -45,7 +64,8 @@ void	ft_execute(t_pipex_bonus *data, char *cmd)
 		ft_free(cmd_argv);
 		ft_err_handler(data, 127, unfound_cmd);
 	}
-	execve(cmd_path, cmd_argv, data->env);
+	if (execve(cmd_path, cmd_argv, data->env) == -1)
+		(ft_free(cmd_argv), ft_err_handler(data, 143, "execve failed"));
 }
 
 char	*ft_join(char *s1, char *s2)
@@ -77,15 +97,24 @@ char	*ft_find_executable(t_pipex_bonus *data, char *cmd)
 	char	*fpath;
 	char	*tmp;
 	int		x;
+	char *new_cmd;
 
-	if (access(cmd, X_OK) == 0)
+	if (access(cmd, F_OK | R_OK | X_OK) == 0)
+	{
+		new_cmd = ft_check_if_cmd(cmd);
+		if (new_cmd == NULL)
+			return (NULL);
+		if (access(new_cmd, F_OK | R_OK | X_OK) == 0)
+			return (free(new_cmd), NULL);
 		return (cmd);
+	}
+	
 	x = 0;
 	while (data->paths[x])
 	{
 		tmp = ft_join(data->paths[x], "/");
-		fpath = ft_strjoin_gnl(tmp, cmd);
-		if (access(fpath, X_OK) == 0)
+		(fpath = ft_join(tmp, cmd), free(tmp));
+		if (access(fpath, F_OK | R_OK | X_OK) == 0)
 			return (fpath);
 		(free(fpath), x++);
 	}

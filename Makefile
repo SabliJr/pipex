@@ -9,8 +9,8 @@ EOC:="\033[0;0m"
 YELLOW:="\033[1;33m"
 ORANGE:="\033[0;33m"
 
-GNL_FILES = ./gnl/get_next_line.c \
-			./gnl/get_next_line_utils.c 
+GNL_FILES = ./get_next_line/get_next_line.c \
+			./get_next_line/get_next_line_utils.c 
 
 PIPEX_FILES = ./src/pipex.c\
 			./src/pipex_utils.c \

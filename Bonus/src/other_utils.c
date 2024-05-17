@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 08:43:22 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/07 08:28:58 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/17 15:45:59 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	ft_bzero(void *a, size_t n)
 
 int	ft_init_data(t_pipex_bonus *data, int ac, char *av[], char *envp[])
 {
+	data->pids = NULL;
 	if (ac < 5)
 		ft_err_handler(data, 3, NULL);
 	if (ft_strncmp_b(av[1], "here_doc", 8) == 0)
