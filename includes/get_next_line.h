@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 14:10:30 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/04/19 17:21:05 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/17 17:05:41 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,14 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 1000
 # endif
 
-int		has_end(char *str);
-int		ft_strlen_gnl(const char *s);
-char	*ft_strjoin_gnl(char *s1, char *s2);
-char	*line_dealer(char *updated);
-char	*get_next_line(int fd);
+int		ft_strlen_gnl(char *str);
+char	*get_next_line(int fd, int free_static);
+char	*ft_read_file(int fd, char *lines);
+char	*ft_get_line(char *lines);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strchr(char *s, int c);
 
 #endif
