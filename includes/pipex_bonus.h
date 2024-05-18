@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:34:28 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/17 17:01:52 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/18 16:59:47 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ typedef struct s_pipex_bonus
 }			t_pipex_bonus;
 
 int			ft_init_data(t_pipex_bonus *data, int ac, char *av[], char *envp[]);
-void		ft_get_path(t_pipex_bonus *data);
 void		ft_execute(t_pipex_bonus *data, char *cmd);
 char		*ft_find_executable(t_pipex_bonus *data, char *cmd);
 int			ft_get_exit_status(int exit_status);
@@ -65,6 +64,7 @@ int			ft_open_infile(t_pipex_bonus *data, int *x);
 
 void		*ft_calloc(size_t nmemb, size_t size);
 void		ft_bzero(void *a, size_t n);
-void	ft_print_err(char *str);
+void		ft_print_err(char *str);
+char		**ft_get_paths(char **env);
 
 #endif

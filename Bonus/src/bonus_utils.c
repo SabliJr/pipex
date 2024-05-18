@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 22:12:57 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/17 18:15:07 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/18 16:50:17 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,22 @@ char *ft_check_if_cmd (char *cmd)
 	return (new_cmd);
 }
 
-void	ft_get_path(t_pipex_bonus *data)
+char	**ft_get_paths(char **env)
 {
-	char	**paths;
-	char	**envp;
+	char	**path;
+	int		x;
 
-	envp = data->env;
-	while (ft_strncmp_b(*envp, "PATH=", 5) != 0)
-		envp++;
-	*envp += 5;
-	paths = ft_split(*envp, ':');
-	if (paths == NULL || paths[0] == NULL)
-		ft_err_handler(data, 2, NULL);
-	data->paths = paths;
+	x = 0;
+	while (env && env[x])
+	{	
+		if (ft_strncmp_b("PATH=", env[x], 5) == 0)
+		{
+			path = ft_split(env[x] + 5, ':');
+			return (path);
+		}
+		x++;
+	}
+	return (NULL);
 }
 
 void	ft_execute(t_pipex_bonus *data, char *cmd)
@@ -110,7 +113,7 @@ char	*ft_find_executable(t_pipex_bonus *data, char *cmd)
 	}
 	
 	x = 0;
-	while (data->paths[x])
+	while (data->paths && data->paths[x])
 	{
 		tmp = ft_join(data->paths[x], "/");
 		(fpath = ft_join(tmp, cmd), free(tmp));
