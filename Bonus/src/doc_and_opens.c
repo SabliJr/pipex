@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 07:18:25 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/17 17:59:39 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/18 16:55:05 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,13 @@ int	ft_open_infile(t_pipex_bonus *data, int *x)
 	if (infile == -1)
 	{
 		close(x[1]);
-		ft_err_handler(data, 1, data->argv[1]);
+		write(2, data->argv[1], ft_strlen(data->argv[1]));
+		ft_print_err(": No such file or directory!");
+		if (data->pids)
+			free(data->pids);
+		if ((data->paths))
+			ft_free(data->paths);
+		exit(2);
 	}
 	return (infile);
 }
@@ -71,23 +77,25 @@ int	ft_here_doc(t_pipex_bonus *data, char *delimiter)
 
 void	ft_err_handler(t_pipex_bonus *data, int exit_status, char *msg)
 {
+	if (data->pids)
+		free(data->pids);
 	if (exit_status == 1)
 	{
 		ft_free(data->paths);
 		ft_print_err(msg);
+		exit(EXIT_FAILURE);
 	}
 	else if (exit_status == 2)
-		(ft_print_err("Error: Couldn't split the commands!"));
+		(ft_print_err("Error: Couldn't split the commands!"), exit(EXIT_FAILURE));
 	else if (exit_status == 3)
-		ft_print_err("Invalid arguments!");
+		(ft_print_err("Invalid arguments!"), exit(3));
 	else if (exit_status == 127)
 	{
 		write(2, msg, ft_strlen(msg));
 		ft_print_err(": command not found!");
 		free(msg);
-		ft_free(data->paths);
+		if (data->paths)
+			ft_free(data->paths);
+		exit(127);
 	}
-	if (data->pids)
-		free(data->pids);
-	exit(exit_status);
 }

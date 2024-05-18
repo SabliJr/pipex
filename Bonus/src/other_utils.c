@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 08:43:22 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/17 15:45:59 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/18 15:57:00 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	ft_bzero(void *a, size_t n)
 
 int	ft_init_data(t_pipex_bonus *data, int ac, char *av[], char *envp[])
 {
-	data->pids = NULL;
 	if (ac < 5)
 		ft_err_handler(data, 3, NULL);
 	if (ft_strncmp_b(av[1], "here_doc", 8) == 0)
@@ -48,15 +47,12 @@ int	ft_init_data(t_pipex_bonus *data, int ac, char *av[], char *envp[])
 		data->here_doc = FALSE;
 	if (data->here_doc && ac < 6)
 		ft_err_handler(data, 3, NULL);
-	data->argc = ac;
-	data->argv = av;
-	data->env = envp;
-	data->pids_num = 0;
+
 	if (data->here_doc)
 		data->pids = malloc(sizeof(pid_t) * ac - 4);
 	else
 		data->pids = malloc(sizeof(pid_t) * ac - 3);
-	ft_get_path(data);
+	data->paths = ft_get_paths(envp);
 	if (data->here_doc)
 		return (3);
 	return (2);

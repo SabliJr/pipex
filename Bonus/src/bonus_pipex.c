@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:33:45 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/17 18:30:23 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/18 16:58:52 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,21 @@ int	main(int ac, char *av[], char *envp[])
 	int				exit_status;
 
 	x = -1;
-	if (!envp || !envp[0])
-		(ft_print_err("The env is empty!"), exit(EXIT_FAILURE));
+	data.argc = ac;
+	data.argv = av;
+	data.env = envp;
+	data.pids_num = 0;
+	data.pids = NULL;
 	cmd_index = ft_init_data(&data, ac, av, envp);
 	while (cmd_index <= ac - 2)
 		ft_create_childern(&data, cmd_index++);
-	ft_free(data.paths);
+	if (data.paths)
+		ft_free(data.paths);
 	while (++x < data.pids_num)
 		waitpid(data.pids[x], &exit_status, 0);
-	free(data.pids);
-	exit(EXIT_FAILURE);
+	if (data.pids)
+		free(data.pids);
+	exit(ft_get_exit_status(exit_status));
 }
 
 static void	ft_create_childern(t_pipex_bonus *data, int cmd_index)
@@ -53,7 +58,6 @@ static void	ft_run_first_cmd(t_pipex_bonus *data)
 	int		fds[2];
 	pid_t	pid;
 
-	infile = -100;
 	if (pipe(fds) == -1)
 		ft_err_handler(data, 1, NULL);
 	if (data->here_doc == TRUE)
