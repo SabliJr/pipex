@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 08:43:22 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/18 15:57:00 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:18:17 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	ft_init_data(t_pipex_bonus *data, int ac, char *av[], char *envp[])
 		data->here_doc = FALSE;
 	if (data->here_doc && ac < 6)
 		ft_err_handler(data, 3, NULL);
-
 	if (data->here_doc)
 		data->pids = malloc(sizeof(pid_t) * ac - 4);
 	else
