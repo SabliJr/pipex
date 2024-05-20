@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 13:33:45 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/18 16:58:52 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:05:51 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,7 @@ static void	ft_run_first_cmd(t_pipex_bonus *data)
 		ft_execute(data, data->argv[2 + data->here_doc]);
 	}
 	else
-	{
-		close(fds[0]);
-		close(fds[1]);
 		data->pids[data->pids_num++] = pid;
-	}
 	(dup2(fds[0], STDIN_FILENO), close(fds[0]), close(fds[1]));
 	if (data->here_doc == TRUE && infile != -1)
 		close(infile);

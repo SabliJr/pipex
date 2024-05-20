@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 07:18:25 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/18 16:55:05 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:26:07 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	ft_open_infile(t_pipex_bonus *data, int *x)
 	infile = open(data->argv[1], O_RDONLY);
 	if (infile == -1)
 	{
+		write(2, "MM\n", 3);
 		close(x[1]);
 		write(2, data->argv[1], ft_strlen(data->argv[1]));
 		ft_print_err(": No such file or directory!");
