@@ -2,3 +2,5 @@
 2- When there's no env "env -i", the program prints command not found error which it shouldn't.
 3- When gives the program args like "../" or "./" the program prints "command not found" which it shouldn't.
 4- Check for this case "./pipex_bonus infile cmd ./ cmd ../ cmd outfile"
+
+https://cerebralvalley.notion.site/Mistral-AI-Paris-Hackathon-Event-Details-Hackers-81db0ecdd40a4c668a56d6719172a4ea
