@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:21:39 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/10 13:23:37 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:29:35 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ open this file! Or file doesn't exit, Or it's a directory"
 # define DUP_ERR "An err has occoured with dup2"
 # define FORK_C2 "An Error has occuered with Fork child2"
 # define FORK_C1 "An Error has occuered with Fork child1"
+# define BASH_ERR "bash: "
 
 void		ft_print_err(char *str);
 int			ft_strlen(char *str);

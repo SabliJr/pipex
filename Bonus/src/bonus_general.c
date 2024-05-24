@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 21:19:08 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/17 18:29:37 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:11:43 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_strlen(char *sr)
 	int	x;
 
 	x = 0;
-	while (sr[x])
+	while (sr && sr[x])
 		x++;
 	return (x);
 }

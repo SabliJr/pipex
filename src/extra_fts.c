@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 15:39:48 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/17 16:50:09 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:12:58 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_check_file(t_pipex *data, char **args)
 {
 	if (data->in_file < 0)
 	{
-		if (access(args[1], W_OK) != 0)
+		if (access(args[1], F_OK | W_OK | X_OK) != 0)
 			(close(data->fd[1]), ft_print_err(PER_ERR), exit(127));
 		else
 			(close(data->fd[1]), ft_print_err(OPEN_ERR), exit(EXIT_FAILURE));
@@ -44,15 +44,15 @@ char	*check_cmd_path(char *cmd)
 char	*check_paths(char **paths, char *cmd)
 {
 	char	*fpath;
+	char	*tmp;
 	int		x;
 
 	x = -1;
 	while (paths && paths[++x])
 	{
-		fpath = ft_join(paths[x], "/");
-		if (!fpath)
-			return (ft_free(paths), NULL);
-		fpath = ft_join(fpath, cmd);
+		tmp = ft_join(paths[x], "/");
+		fpath = ft_join(tmp, cmd);
+		free(tmp);
 		if (!fpath)
 			return (ft_free(paths), NULL);
 		if (access(fpath, F_OK | R_OK | X_OK) == 0)

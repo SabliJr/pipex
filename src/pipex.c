@@ -6,7 +6,7 @@
 /*   By: sabakar- <sabakar-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:38:42 by sabakar-          #+#    #+#             */
-/*   Updated: 2024/05/18 14:49:36 by sabakar-         ###   ########.fr       */
+/*   Updated: 2024/05/21 16:27:06 by sabakar-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,6 @@ int	main(int argc, char *argv[], char *envp[])
 	if (argc != 5)
 		(ft_print_err("The usage: i.e ./pipex file1 cmd1 cmd2 file2"),
 			exit(EXIT_FAILURE));
-	if (access(argv[1], F_OK | R_OK) == -1)
-	{	
-		write(2, argv[1], ft_strlen(argv[1]));
-		ft_print_err(": No such file or directory");
-	}
 	return (ft_pipex(&data, argv, envp));
 }
 
@@ -94,7 +89,7 @@ void	ft_second_child_process(t_pipex *data, char **args, char **env)
 		if (access(args[4], W_OK) != 0)
 			(close(data->fd[0]), ft_print_err(PER_ERR), exit(127));
 		else
-			(close(data->fd[0]), ft_print_err(OPEN_ERR), exit(EXIT_FAILURE));
+			(close(data->fd[0]), perror("bash"), exit(EXIT_FAILURE));
 	}
 	if (dup2(data->out_file, 1) == -1)
 		ft_err(data);
